@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gtapp/view/biblia/biblialivros.dart';
+import 'package:gtapp/view/biblia/tabs/bibliatabs.dart';
 import 'package:gtapp/view/eventos.dart';
 
 class Home extends StatelessWidget {

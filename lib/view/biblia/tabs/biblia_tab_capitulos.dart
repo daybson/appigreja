@@ -3,27 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:gtapp/databaseHelper.dart';
 import 'package:gtapp/model/biblia/livro.dart';
 import 'package:gtapp/view/biblia/bibliaversiculos.dart';
+import 'package:gtapp/view/biblia/tabs/bibliatabs.dart';
 
-class BibliaCapitulos extends StatefulWidget {
-  Livro livro;
-
-  BibliaCapitulos(this.livro) {}
-
+class TabCapitulos extends StatefulWidget {
   @override
-  State<BibliaCapitulos> createState() => _BibliaCapitulosState();
+  State<TabCapitulos> createState() => _TabCapitulosState();
 }
 
-class _BibliaCapitulosState extends State<BibliaCapitulos> {
+class _TabCapitulosState extends State<TabCapitulos> {
   List<int> capitulos = [];
 
-  _BibliaCapitulosState() {
+  _TabCapitulosState() {
     countCapitulos();
   }
 
   countCapitulos() async {
     var db = await DatabaseHelper.instance.database;
     var result = await db.rawQuery(
-        "SELECT MAX(DISTINCT chapter) AS QtdCapitulos FROM verse WHERE book_id = ${widget.livro.book_reference_id}");
+        "SELECT MAX(DISTINCT chapter) AS QtdCapitulos FROM verse WHERE book_id = ${POG.livro}");
 
     setState(() {
       capitulos = new List<int>.generate(
@@ -34,22 +31,14 @@ class _BibliaCapitulosState extends State<BibliaCapitulos> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Capítulos ${widget.livro.name}'),
-      ),
       body: GridView.count(
         crossAxisCount: 10,
         children: List.generate(
           capitulos.length,
           (index) => TextButton(
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => BibliaVersiculos(
-                          widget.livro.book_reference_id,
-                          index + 1,
-                          widget.livro.name)));
+              POG.capitulo = index + 1;
+              DefaultTabController.of(context).animateTo(2);
             },
             child: Text(capitulos[index].toString()),
           ),

@@ -3,39 +3,34 @@ import 'package:flutter/material.dart';
 import 'package:gtapp/databaseHelper.dart';
 import 'package:gtapp/model/biblia/versiculo.dart';
 import 'package:gtapp/view/biblia/bibliacapitulos.dart';
+import 'package:gtapp/view/biblia/tabs/bibliatabs.dart';
 
-class BibliaVersiculos extends StatefulWidget {
-  int capitulo;
-  int livro;
-  String livroNome;
-
-  BibliaVersiculos(this.livro, this.capitulo, this.livroNome);
+class TabVersiculos extends StatefulWidget {
 
   @override
-  State<BibliaVersiculos> createState() => _BibliaVersiculosState();
+  State<TabVersiculos> createState() => _TabVersiculosState();
 }
 
-class _BibliaVersiculosState extends State<BibliaVersiculos> {
+class _TabVersiculosState extends State<TabVersiculos> {
   List<Versiculo> versiculos = [];
 
-  _BibliaVersiculosState() {
+  _TabVersiculosState() {
     loadVersiculos();
   }
 
   loadVersiculos() async {
     var db = await DatabaseHelper.instance.database;
     var result = await db.rawQuery(
-        "SELECT * FROM verse WHERE book_id = ${widget
-            .livro} AND chapter = ${widget.capitulo}");
+        "SELECT * FROM verse WHERE book_id = ${POG.livro} AND chapter = ${POG.capitulo}");
 
     setState(() {
       result.forEach((element) {
-        versiculos.add(Versiculo(id: element["id"] as int,
+        versiculos.add(Versiculo(
+            id: element["id"] as int,
             book_id: element["book_id"] as int,
-            chapter:  element["chapter"] as int,
-            verse:  element["verse"] as int,
-            text:  element["text"] as String)
-            );
+            chapter: element["chapter"] as int,
+            verse: element["verse"] as int,
+            text: element["text"] as String));
       });
     });
   }
@@ -43,9 +38,6 @@ class _BibliaVersiculosState extends State<BibliaVersiculos> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('${widget.livroNome}: ${widget.capitulo}'),
-      ),
       body: ListView.builder(
           itemCount: versiculos.length,
           itemBuilder: (context, i) {
