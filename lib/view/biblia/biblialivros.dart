@@ -1,76 +1,39 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gtapp/databaseHelper.dart';
+import 'package:gtapp/model/biblia/livro.dart';
 import 'package:gtapp/view/biblia/bibliacapitulos.dart';
+import 'package:sqflite/sqflite.dart';
+import 'dart:io';
+import 'package:intl/intl.dart';
+import 'dart:convert';
+import 'package:path/path.dart';
 
-class BibliaLivros extends StatelessWidget {
-  var livros = [
-    "Gênesis",
-    "Êxodo",
-    "Levítico",
-    "Números",
-    "Deuteronômio",
-    "Josué",
-    "Juízes",
-    "Rute",
-    "1 Samuel",
-    "2 Samuel",
-    "1 Reis",
-    "2 Reis",
-    "1 Crônicas",
-    "2 Crônicas",
-    "Esdras",
-    "Neemias",
-    "Ester",
-    "Jó",
-    "Salmos",
-    "Provérbios",
-    "Eclesiastes",
-    "Cantares",
-    "Isaías",
-    "Jeremias",
-    "Lamentações",
-    "Ezequiel",
-    "Daniel",
-    "Oseias",
-    "Joel",
-    "Amós",
-    "Obadias",
-    "Jonas",
-    "Miqueias",
-    "Naum",
-    "Habacuque",
-    "Sofonias",
-    "Ageu",
-    "Zacarias",
-    "Malaquias",
-    "Mateus",
-    "Marcos",
-    "Lucas",
-    "João",
-    "Atos dos Apóstolos",
-    "Romanos",
-    "1 Coríntios",
-    "2 Coríntios",
-    "Gálatas",
-    "Efésios",
-    "Filipenses",
-    "Colossenses",
-    "1 Tessalonicenses",
-    "2 Tessalonicenses",
-    "1 Timóteo",
-    "2 Timóteo",
-    "Tito",
-    "Filemom",
-    "Hebreus",
-    "Tiago",
-    "1 Pedro",
-    "2 Pedro",
-    "1 João",
-    "2 João",
-    "3 João",
-    "Judas",
-    "Apocalipse",
-  ];
+class BibliaLivros extends StatefulWidget {
+  BibliaLivros() {}
+
+  @override
+  State<BibliaLivros> createState() => _BibliaLivrosState();
+}
+
+class _BibliaLivrosState extends State<BibliaLivros> {
+  List<Livro> livrosList = [];
+
+  _BibliaLivrosState() {
+    loaddata();
+  }
+
+  void loaddata() async {
+    livrosList = [];
+    var db = await DatabaseHelper.instance.database;
+    var list = await db.query('book');
+    list.forEach((element) {
+      var l = Livro.fromMap(element);
+      livrosList.add(l);
+    });
+
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,10 +43,10 @@ class BibliaLivros extends StatelessWidget {
       ),
       body: ListView.separated(
           separatorBuilder: (context, i) => Divider(),
-          itemCount: livros.length,
+          itemCount: livrosList.length,
           itemBuilder: (context, i) {
             return ListTile(
-              title: Text(livros[i]),
+              title: Text(livrosList[i].name),
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => BibliaCapitulos()));

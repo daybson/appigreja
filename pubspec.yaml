@@ -49,6 +49,9 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  path_provider: ^2.0.15
+  path: ^1.8.3
+  sqflite: ^2.2.8+4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -77,6 +80,8 @@ flutter:
     - assets/images/background(12).jpg
     - assets/images/background(13).jpg
 
+    - assets/databases/NVI.sqlite
+    - assets/databases/AS21.sqlite
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

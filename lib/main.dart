@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:gtapp/databaseHelper.dart';
 import 'package:gtapp/view/home.dart';
 import 'package:gtapp/view/singin.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await DatabaseHelper.instance.loadDatabase(-1);
   runApp(const MyApp());
 }
 
