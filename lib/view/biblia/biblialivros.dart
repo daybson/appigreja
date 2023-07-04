@@ -49,7 +49,7 @@ class _BibliaLivrosState extends State<BibliaLivros> {
               title: Text(livrosList[i].name),
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => BibliaCapitulos()));
+                    MaterialPageRoute(builder: (context) => BibliaCapitulos(livrosList[i])));
               },
             );
           }),
